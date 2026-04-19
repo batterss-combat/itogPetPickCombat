@@ -1,0 +1,1477 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+:root {
+    --bg-color: #f8f9fa;
+    --card-bg: #ffffff;
+    --text-color: #1a1a1a;
+    --text-secondary: #6c757d;
+    --border-color: #e9ecef;
+    --input-bg: #ffffff;
+    --nav-bg: #ffffff;
+    --shadow: rgba(0,0,0,0.08);
+    --accent: #ff6b81;
+    --accent-light: #fff5f6;
+    --btn-outline-border: #ff6b81;
+    --error-color: #ff4757;
+    --success-color: #2ecc71;
+    --nav-height: 70px;
+}
+
+body.dark-theme {
+    --bg-color: #121212;
+    --card-bg: #1e1e1e;
+    --text-color: #e0e0e0;
+    --text-secondary: #9e9e9e;
+    --border-color: #333333;
+    --input-bg: #2a2a2a;
+    --nav-bg: #1e1e1e;
+    --shadow: rgba(0,0,0,0.4);
+    --accent-light: #2a1a1c;
+}
+
+body {
+    background: var(--bg-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    color: var(--text-color);
+    transition: background 0.3s, color 0.3s;
+    overflow: hidden;
+}
+
+#app {
+    width: 100%;
+    max-width: 430px;
+    height: 100vh;
+    max-height: 900px;
+    background: var(--card-bg);
+    box-shadow: 0 0 20px var(--shadow);
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border: none;
+    border-radius: 0;
+    color: var(--text-color);
+    margin: 0 auto;
+}
+
+@media (min-width: 431px) {
+    #app {
+        border-radius: 30px;
+        height: 780px;
+        border: 1px solid var(--border-color);
+        margin: 20px auto;
+    }
+    body {
+        padding: 20px;
+    }
+}
+
+/* Основной контейнер страницы */
+.page-container {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px 16px;
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Когда есть навигация */
+#app:has(#bottom-nav[style*="display: flex"]) .page-container {
+    padding-bottom: calc(var(--nav-height) + 8px);
+}
+
+/* Контейнер для страницы создания объявления */
+.page-container:has(.create-listing-form) {
+    padding-bottom: calc(var(--nav-height) + 20px) !important;
+}
+
+/* Страница деталей питомца */
+.page-container:has(#owner-section) {
+    padding-bottom: calc(var(--nav-height) + 20px) !important;
+}
+
+#owner-section {
+    margin-bottom: 10px;
+}
+
+/* Для страниц без навигации - контейнер занимает всю высоту */
+.auth-container,
+.onboarding-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow-y: auto;
+    padding: 16px;
+}
+
+.auth-container {
+    justify-content: center;
+    align-items: center;
+    min-height: 100%;
+    gap: 16px;
+    width: 100%;
+}
+
+/* Онбординг */
+.onboarding-container {
+    justify-content: space-between;
+    padding: 12px 16px 16px;
+}
+
+.auth-box {
+    width: 100%;
+    max-width: 340px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 0 auto;
+}
+
+.app-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--accent);
+    text-align: center;
+    margin-bottom: 16px;
+    letter-spacing: -0.5px;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+}
+
+.auth-form input {
+    padding: 12px;
+    border: 1.5px solid var(--border-color);
+    border-radius: 12px;
+    font-size: 14px;
+    outline: none;
+    transition: 0.2s;
+    width: 100%;
+    background: var(--input-bg);
+    color: var(--text-color);
+}
+
+.auth-form input:focus {
+    border-color: var(--accent);
+}
+
+.auth-form .error-message {
+    color: var(--error-color);
+    font-size: 12px;
+    margin-top: -4px;
+    padding-left: 4px;
+}
+
+.btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+    box-shadow: 0 4px 12px rgba(255, 107, 129, 0.25);
+    width: 100%;
+}
+
+.btn-small {
+    padding: 6px 12px;
+    font-size: 13px;
+    width: auto;
+    display: inline-block;
+}
+
+.btn:hover {
+    background: #ff4757;
+    transform: scale(0.98);
+}
+
+.btn-outline {
+    background: transparent;
+    color: var(--accent);
+    box-shadow: none;
+    border: 1.5px solid var(--btn-outline-border);
+    font-weight: 600;
+}
+
+.btn-outline:hover {
+    background: var(--accent);
+    color: white;
+}
+
+.btn-success {
+    background: var(--success-color);
+    box-shadow: 0 4px 12px rgba(46, 204, 113, 0.25);
+}
+
+.btn-success:hover {
+    background: #27ae60;
+}
+
+.link {
+    color: var(--accent);
+    text-align: center;
+    margin-top: 8px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+/* Тип аккаунта */
+.account-type-selector {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin: 16px 0;
+    width: 100%;
+}
+
+.account-type-btn {
+    flex: 1;
+    padding: 18px 12px;
+    border: 2px solid var(--border-color);
+    border-radius: 18px;
+    background: var(--card-bg);
+    color: var(--text-color);
+    cursor: pointer;
+    transition: 0.2s;
+    text-align: center;
+}
+
+.account-type-btn i {
+    font-size: 36px;
+    margin-bottom: 8px;
+    display: block;
+    color: var(--accent);
+}
+
+.account-type-btn.active {
+    border-color: var(--accent);
+    background: var(--accent-light);
+}
+
+.account-type-btn span {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+/* Онбординг */
+.onboarding-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    flex-shrink: 0;
+}
+
+.onboarding-header .back-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 4px;
+}
+
+.onboarding-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+}
+
+.onboarding-title {
+    font-size: 22px;
+    font-weight: 700;
+    text-align: center;
+    color: var(--text-color);
+    letter-spacing: -0.5px;
+}
+
+.input-with-icon {
+    position: relative;
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
+}
+
+.input-with-icon i:first-child {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--accent);
+    font-size: 16px;
+    z-index: 1;
+}
+
+.input-with-icon input {
+    width: 100%;
+    padding: 12px 40px 12px 40px;
+    border: 1.5px solid var(--border-color);
+    border-radius: 12px;
+    font-size: 14px;
+    outline: none;
+    background: var(--input-bg);
+    color: var(--text-color);
+}
+
+.input-with-icon input:focus {
+    border-color: var(--accent);
+}
+
+.password-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: var(--text-secondary);
+    left: auto;
+}
+
+.error-message {
+    color: var(--error-color);
+    font-size: 12px;
+    text-align: center;
+    margin-top: 4px;
+    font-weight: 500;
+}
+
+.success-message {
+    color: var(--success-color);
+    font-size: 12px;
+    text-align: center;
+    margin-top: 4px;
+    font-weight: 500;
+}
+
+.continue-btn {
+    padding: 12px 24px;
+    border-radius: 30px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(255, 107, 129, 0.4);
+    transition: 0.2s;
+    width: fit-content;
+    align-self: flex-end;
+    margin-top: auto;
+    flex-shrink: 0;
+}
+
+.continue-btn:hover {
+    background: #ff4757;
+    transform: scale(0.96);
+}
+
+/* Шапка главной */
+.header {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 2px 0 6px 0;
+    margin-bottom: 2px;
+    width: 100%;
+    flex-shrink: 0;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.header-top h2 {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: var(--accent);
+}
+
+.city-badge {
+    background: var(--bg-color);
+    padding: 5px 10px;
+    border-radius: 30px;
+    font-weight: 500;
+    font-size: 12px;
+    color: var(--text-color);
+}
+
+.city-badge i {
+    margin-right: 4px;
+    color: var(--accent);
+}
+
+.filter-chips {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    padding: 4px 0;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    width: 100%;
+    flex-shrink: 0;
+}
+
+.filter-chips::-webkit-scrollbar {
+    display: none;
+}
+
+.filter-chip {
+    padding: 6px 14px;
+    background: var(--bg-color);
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: 0.2s;
+    color: var(--text-color);
+    border: 1px solid transparent;
+}
+
+.filter-chip.active {
+    background: var(--accent);
+    color: white;
+}
+
+.filter-chip i {
+    margin-right: 4px;
+}
+
+/* ГЛАВНАЯ СТРАНИЦА - КАРТОЧКА НА ВСЮ ВЫСОТУ */
+#app .page-container > div:last-child {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.swipe-container {
+    position: relative;
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+}
+
+.card {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: var(--card-bg);
+    border-radius: 20px;
+    box-shadow: 0 4px 16px var(--shadow);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    border: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+}
+
+.card-img {
+    width: 100%;
+    flex: 1;
+    background-size: cover;
+    background-position: center;
+    background-color: #ddd;
+    min-height: 0;
+}
+
+.card-info {
+    padding: 16px;
+    flex-shrink: 0;
+    max-height: 40%;
+    overflow-y: auto;
+}
+
+.card-info h3 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: var(--text-color);
+    letter-spacing: -0.3px;
+}
+
+.card-info p {
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.card-info p i {
+    width: 18px;
+    color: var(--accent);
+}
+
+.card-description {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border-color);
+}
+
+.card-description p {
+    color: var(--text-secondary);
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+/* Скрываем кнопки свайпа */
+.swipe-buttons {
+    display: none !important;
+}
+
+/* Списки */
+.favorites-list, .listings-list, .chats-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.favorite-item, .listing-item, .chat-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    background: var(--card-bg);
+    border-radius: 14px;
+    box-shadow: 0 2px 6px var(--shadow);
+    cursor: pointer;
+    border: 1px solid var(--border-color);
+    width: 100%;
+    flex-shrink: 0;
+}
+
+.favorite-img, .listing-img, .chat-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 14px;
+    background-size: cover;
+    background-position: center;
+    flex-shrink: 0;
+}
+
+.favorite-info, .listing-info, .chat-info {
+    flex: 1;
+}
+
+.favorite-info h4, .listing-info h4, .chat-info h4 {
+    color: var(--text-color);
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.favorite-info p, .listing-info p, .chat-info p {
+    color: var(--text-secondary);
+    font-size: 12px;
+}
+
+.favorite-chat-btn, .chat-btn {
+    padding: 7px 12px;
+    background: var(--accent);
+    color: white;
+    border-radius: 30px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 12px;
+    flex-shrink: 0;
+}
+
+/* Чат */
+.chat-window {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    padding: 0 !important;
+    position: relative;
+}
+
+.chat-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0 15px;
+    flex-shrink: 0;
+}
+
+.chat-header h3 {
+    flex: 1;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.chat-header .chat-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+}
+
+.messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-height: 0;
+}
+
+.message {
+    max-width: 80%;
+    padding: 10px 14px;
+    border-radius: 18px;
+    background: var(--bg-color);
+    align-self: flex-start;
+    color: var(--text-color);
+    font-size: 14px;
+    line-height: 1.3;
+    word-wrap: break-word;
+}
+
+.message.own {
+    background: var(--accent);
+    color: white;
+    align-self: flex-end;
+}
+
+.chat-input-container {
+    flex-shrink: 0;
+    padding: 10px 0 0 0;
+    margin-top: auto;
+    background: var(--card-bg);
+    border-top: 1px solid var(--border-color);
+}
+
+.chat-input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding-bottom: 10px;
+}
+
+.chat-input-wrapper input {
+    flex: 1;
+    min-width: 0;
+    padding: 12px 16px;
+    border: 1.5px solid var(--border-color);
+    border-radius: 30px;
+    font-size: 14px;
+    outline: none;
+    background: var(--input-bg);
+    color: var(--text-color);
+}
+
+.chat-input-wrapper input:focus {
+    border-color: var(--accent);
+}
+
+.chat-input-wrapper .btn {
+    width: 50px;
+    height: 50px;
+    padding: 0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(255, 107, 129, 0.25);
+}
+
+.chat-input-wrapper .btn i {
+    font-size: 18px;
+}
+
+/* Навигация */
+#bottom-nav {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: var(--nav-height);
+    background: var(--nav-bg);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid var(--border-color);
+    max-width: 430px;
+    margin: 0 auto;
+    z-index: 100;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: 0.2s;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.nav-item.active {
+    color: var(--accent);
+}
+
+.nav-item i {
+    font-size: 20px;
+}
+
+.nav-item span {
+    font-size: 10px;
+}
+
+/* Профиль */
+.profile-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 12px;
+    flex-shrink: 0;
+}
+
+.profile-avatar {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 34px;
+    margin-bottom: 10px;
+    background-size: cover;
+    background-position: center;
+    background-color: var(--accent);
+    position: relative;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.profile-avatar:hover {
+    opacity: 0.8;
+}
+
+.avatar-overlay {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 24px;
+    height: 24px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 11px;
+    border: 2px solid var(--card-bg);
+}
+
+.avatar-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.avatar-placeholder i {
+    font-size: 38px;
+    color: white;
+}
+
+.profile-type-badge {
+    background: var(--accent-light);
+    padding: 4px 14px;
+    border-radius: 30px;
+    font-size: 12px;
+    margin-top: 4px;
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.profile-info {
+    margin-bottom: 12px;
+    width: 100%;
+    flex-shrink: 0;
+}
+
+.profile-info p {
+    margin: 8px 0;
+    font-size: 13px;
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.profile-info i {
+    width: 18px;
+    color: var(--accent);
+}
+
+.description-edit-area {
+    background: var(--bg-color);
+    padding: 12px;
+    border-radius: 14px;
+    margin: 10px 0;
+    width: 100%;
+}
+
+.description-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.description-label span {
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 13px;
+}
+
+.description-textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1.5px solid var(--border-color);
+    border-radius: 12px;
+    background: var(--input-bg);
+    color: var(--text-color);
+    font-size: 13px;
+    resize: vertical;
+    min-height: 70px;
+    outline: none;
+}
+
+.description-textarea:focus {
+    border-color: var(--accent);
+}
+
+.description-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.description-actions .btn,
+.description-actions .btn-outline {
+    width: auto;
+    padding: 8px 18px;
+    border-radius: 30px;
+}
+
+/* Контейнер с контактами в профиле владельца */
+.profile-contacts {
+    background: var(--bg-color);
+    border-radius: 20px;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+}
+
+.profile-contacts p {
+    margin: 0;
+    padding: 4px 0;
+    font-size: 14px;
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.profile-contacts p:first-child {
+    padding-top: 0;
+}
+
+.profile-contacts p:last-child {
+    padding-bottom: 0;
+}
+
+.profile-contacts i {
+    width: 20px;
+    color: var(--accent);
+}
+
+/* Стили для профиля владельца */
+.owner-profile-container {
+    padding: 16px 20px !important;
+    align-items: center;
+    text-align: center;
+}
+
+.owner-back-btn {
+    align-self: flex-start;
+    margin-bottom: 10px;
+    cursor: pointer;
+    font-size: 20px;
+    color: var(--text-color);
+}
+
+.owner-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto 12px;
+    border: 3px solid var(--accent);
+}
+
+.owner-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.owner-name {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: var(--text-color);
+}
+
+.owner-type-badge {
+    display: inline-block;
+    background: var(--accent-light);
+    padding: 4px 16px;
+    border-radius: 30px;
+    font-size: 13px;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.owner-reviews {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.owner-reviews i {
+    color: #ffc107;
+}
+
+.owner-info-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    background: var(--bg-color);
+    padding: 12px 16px;
+    border-radius: 16px;
+    margin-bottom: 8px;
+    width: 100%;
+    text-align: left;
+}
+
+.owner-info-row i {
+    width: 20px;
+    color: var(--accent);
+    font-size: 16px;
+}
+
+.owner-info-row span {
+    color: var(--text-color);
+    font-size: 14px;
+}
+
+.owner-review-section {
+    width: 100%;
+    margin-top: 20px;
+    text-align: left;
+}
+
+.owner-review-section h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--accent);
+}
+
+.owner-review-card {
+    background: var(--bg-color);
+    border-radius: 16px;
+    padding: 16px;
+}
+
+.review-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.review-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.review-info {
+    flex: 1;
+}
+
+.review-author {
+    font-weight: 600;
+    color: var(--text-color);
+    font-size: 14px;
+}
+
+.review-date {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.review-text {
+    color: var(--text-color);
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.owner-review-form {
+    width: 100%;
+    margin-top: 20px;
+    text-align: left;
+}
+
+.owner-review-form h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--text-color);
+}
+
+.owner-review-form textarea {
+    width: 100%;
+    padding: 12px;
+    border-radius: 16px;
+    border: 1.5px solid var(--border-color);
+    background: var(--input-bg);
+    color: var(--text-color);
+    font-size: 14px;
+    min-height: 100px;
+    resize: vertical;
+    outline: none;
+    margin-bottom: 12px;
+}
+
+.owner-review-form textarea:focus {
+    border-color: var(--accent);
+}
+
+.owner-review-form .btn {
+    width: 100%;
+    padding: 12px;
+    border-radius: 30px;
+}
+
+.owner-bottom-spacer {
+    height: 30px;
+    width: 100%;
+}
+
+.theme-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px;
+    background: var(--bg-color);
+    border-radius: 14px;
+    margin: 12px 0;
+    width: 100%;
+    flex-shrink: 0;
+}
+
+.theme-toggle span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 500;
+    font-size: 13px;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 46px;
+    height: 22px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 22px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: var(--accent);
+}
+
+input:checked + .slider:before {
+    transform: translateX(24px);
+}
+
+.logout-btn {
+    margin-top: 12px;
+    width: 100%;
+    border-radius: 30px;
+    flex-shrink: 0;
+}
+
+/* Модальное окно */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 20px;
+    max-width: 300px;
+    width: 90%;
+    text-align: center;
+}
+
+.modal h3 {
+    margin-bottom: 12px;
+    color: var(--text-color);
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.modal p {
+    margin-bottom: 18px;
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.modal-actions .btn,
+.modal-actions .btn-outline {
+    flex: 1;
+    padding: 10px;
+    border-radius: 30px;
+    font-weight: 600;
+}
+
+/* Форма создания объявления */
+.create-listing-form {
+    background: var(--bg-color);
+    border-radius: 16px;
+    padding: 14px;
+    margin: 10px 0;
+    overflow-y: auto;
+    flex: 1;
+    padding-bottom: 20px;
+}
+
+.create-listing-form .btn {
+    margin-bottom: 10px;
+}
+
+.form-group {
+    margin-bottom: 14px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: var(--text-color);
+    font-size: 13px;
+}
+
+.form-group label i {
+    margin-right: 5px;
+    color: var(--accent);
+    width: 16px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1.5px solid var(--border-color);
+    border-radius: 12px;
+    font-size: 13px;
+    outline: none;
+    background: var(--input-bg);
+    color: var(--text-color);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: var(--accent);
+}
+
+.form-group textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+.photo-upload-area {
+    border: 2px dashed var(--border-color);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.2s;
+    background: var(--input-bg);
+}
+
+.photo-upload-area:hover {
+    border-color: var(--accent);
+}
+
+.photo-upload-area i {
+    font-size: 32px;
+    color: var(--accent);
+    margin-bottom: 6px;
+}
+
+.photo-preview {
+    width: 100%;
+    height: 160px;
+    border-radius: 12px;
+    background-size: cover;
+    background-position: center;
+    margin-top: 6px;
+}
+
+.switch-group {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 0;
+}
+
+.switch-group span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 500;
+    font-size: 13px;
+}
+
+.switch-group span i {
+    width: 18px;
+    color: var(--accent);
+}
+
+/* Стили для поля ввода с подсказками */
+.onboarding-input-wrapper {
+    position: relative;
+    margin-top: 4px;
+    width: 100%;
+    max-width: 320px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.onboarding-input-wrapper i {
+    position: absolute;
+    left: 12px;
+    top: 14px;
+    color: var(--accent);
+    z-index: 1;
+}
+
+.onboarding-input {
+    width: 100%;
+    padding: 12px 12px 12px 40px;
+    border: 1.5px solid var(--border-color);
+    border-radius: 12px;
+    font-size: 14px;
+    outline: none;
+    transition: 0.2s;
+    background: var(--input-bg);
+    color: var(--text-color);
+}
+
+.onboarding-input:focus {
+    border-color: var(--accent);
+}
+
+.add-listing-btn {
+    margin: 10px 0;
+    flex-shrink: 0;
+}
+
+/* Утилиты */
+.text-center { text-align: center; }
+.mt-3 { margin-top: 12px; }
+.mb-3 { margin-bottom: 12px; }
+.hidden { display: none !important; }
+
+/* Адаптация для очень маленьких экранов */
+@media (max-height: 650px) {
+    .card-info {
+        padding: 12px;
+    }
+    .card-info h3 {
+        font-size: 18px;
+    }
+    .card-info p {
+        font-size: 12px;
+        margin-bottom: 4px;
+    }
+    .profile-avatar {
+        width: 65px;
+        height: 65px;
+        font-size: 30px;
+    }
+    .auth-box {
+        gap: 8px;
+    }
+    .btn {
+        padding: 10px;
+        font-size: 14px;
+    }
+    .filter-chip {
+        padding: 5px 12px;
+        font-size: 12px;
+    }
+    :root {
+        --nav-height: 60px;
+    }
+    .chat-header {
+        padding: 8px 0 12px;
+    }
+    .chat-input-container {
+        padding: 8px 0 0 0;
+    }
+    .chat-input-wrapper {
+        padding-bottom: 8px;
+    }
+    .chat-input-wrapper input {
+        padding: 10px 14px;
+        font-size: 13px;
+    }
+    .chat-input-wrapper .btn {
+        width: 44px;
+        height: 44px;
+    }
+    .messages {
+        padding: 8px 0;
+    }
+    .message {
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+    .profile-contacts {
+        padding: 10px 14px;
+        margin-bottom: 12px;
+    }
+    .owner-avatar {
+        width: 80px;
+        height: 80px;
+    }
+    .owner-name {
+        font-size: 20px;
+    }
+    .owner-info-row {
+        padding: 10px 14px;
+    }
+    .owner-review-form textarea {
+        min-height: 80px;
+    }
+    .owner-bottom-spacer {
+        height: 20px;
+    }
+    .create-listing-form {
+        padding-bottom: 15px;
+    }
+    .create-listing-form .btn {
+        margin-bottom: 8px;
+    }
+}
